@@ -1,0 +1,75 @@
+ext {
+
+    // debug模式
+    debug = true;
+
+    shiroVersion = "1.4.0";
+
+    quartzVersion = "2.3.0"
+
+    all = [
+
+            junit            : "junit:junit:4.12",
+
+            // provide
+            lombok           : "org.projectlombok:lombok:1.18.0",
+
+            // ###### spring-boot的依赖 #######
+            sbsTest          : "org.springframework.boot:spring-boot-starter-test:${springBootVersion}",
+            sbs              : "org.springframework.boot:spring-boot-starter:${springBootVersion}",
+            sbsDevtools      : "org.springframework.boot:spring-boot-devtools:${springBootVersion}",
+            sbsAutoconfigure : "org.springframework.boot:spring-boot-autoconfigure:${springBootVersion}",
+            sbsJdbc          : "org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}",
+            sbsWeb           : "org.springframework.boot:spring-boot-starter-web:${springBootVersion}",
+            sbsThymeleaf     : "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}",
+            sbsWebsocket     : "org.springframework.boot:spring-boot-starter-websocket:${springBootVersion}",
+
+            sbsActuator      : "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}",
+            sbsAmqp          : "org.springframework.boot:spring-boot-starter-amqp:${springBootVersion}",
+
+            sbsJpa           : "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}",
+            sbsMongodb       : "org.springframework.boot:spring-boot-starter-data-mongodb:${springBootVersion}",
+            sbsRedis         : "org.springframework.boot:spring-boot-starter-data-redis:${springBootVersion}",
+
+            sbsQuartz        : "org.springframework.boot:spring-boot-starter-quartz:${springBootVersion}",
+
+            mybatisSbs       : "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2",
+
+
+            rocketmqClient   : "org.apache.rocketmq:rocketmq-client:4.2.0",
+
+            shiroSpring      : "org.apache.shiro:shiro-spring:${shiroVersion}",
+            shiroWeb         : "org.apache.shiro:shiro-web:${shiroVersion}",
+            shiroEhcache     : "org.apache.shiro:shiro-ehcache:${shiroVersion}",
+            shiroQuartz      : "org.apache.shiro:shiro-quartz:${shiroVersion}",
+            shiroCas         : "org.apache.shiro:shiro-cas:${shiroVersion}",
+
+            mariadbJavaClient: "org.mariadb.jdbc:mariadb-java-client:2.2.2",
+            mysqlConnector   : "mysql:mysql-connector-java:6.0.6",
+
+            hsqldb           : "org.hsqldb:hsqldb:2.4.1",
+
+            commonsLang      : "commons-lang:commons-lang:2.6",
+            commonsPool      : "commons-pool:commons-pool:1.6",
+            commonsMath3     : "org.apache.commons:commons-math3:3.6.1",
+            commonsFileupload: "commons-fileupload:commons-fileupload:1.3.3",
+
+
+            javaxServletApi  : "javax.servlet:javax.servlet-api:4.0.1",
+
+            nettyAll         : "io.netty:netty-all:4.1.25.Final",
+
+            guava            : "com.google.guava:guava:25.1-jre",
+
+            fastjson         : "com.alibaba:fastjson:1.2.47",
+            druid            : "com.alibaba:druid:1.1.10",
+            dubbo            : "com.alibaba:dubbo:2.6.2",
+
+
+            quartz           : "org.quartz-scheduler:quartz:${quartzVersion}",
+            quartzJobs       : "org.quartz-scheduler:quartz-jobs:${quartzVersion}",
+
+    ]
+
+
+}

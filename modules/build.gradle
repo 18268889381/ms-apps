@@ -1,0 +1,23 @@
+subprojects {
+
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+
+    dependencies {
+        compile fileTree(dir: 'libs', include: ['*.jar'])
+
+        def d = (all);
+
+        testCompile(d.sbsTest);
+
+        compile(d.sbs)
+        compile(d.sbsAutoconfigure)
+
+        // debug模式下使用spring-boot开发工具
+        if (debug) {
+            compile(d.sbsDevtools);
+        }
+    }
+
+}

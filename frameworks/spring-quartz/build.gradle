@@ -1,0 +1,22 @@
+description = "quartz"
+
+dependencies {
+
+
+    def d = (all);
+
+    compile(d.mysqlConnector)
+
+    compile(d.druid)
+
+    compile(d.sbsJdbc)
+//    compile(d.sbsWeb);
+
+    compile(d.quartz);
+    compile(d.quartzJobs);
+
+    compile(d.sbsQuartz)
+
+
+}
+

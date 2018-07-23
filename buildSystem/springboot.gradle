@@ -1,0 +1,13 @@
+
+apply: "java"
+//apply: "web"
+
+
+dependencies {
+
+    def d = (all);
+
+    compile(d.sbsWeb);
+    compile(d.sbsThymeleaf);
+    
+}
