@@ -12,6 +12,9 @@ public class CpuEntity {
     @Column(name = "tenant", tag = true)
     private String tenant = "default";
 
+    @Column(name = "tag2", tag = true)
+    private String tag2 = "tag-0";
+
     @Column(name = "idle")
     private Long idle;
 
@@ -37,6 +40,14 @@ public class CpuEntity {
 
     public void setTenant(String tenant) {
         this.tenant = tenant;
+    }
+
+    public String getTag2() {
+        return tag2;
+    }
+
+    public void setTag2(String tag2) {
+        this.tag2 = tag2;
     }
 
     public Long getIdle() {
@@ -91,11 +102,13 @@ public class CpuEntity {
     public String toString() {
         return "CpuEntity{" +
                 "tenant='" + tenant + '\'' +
+                ", tag2='" + tag2 + '\'' +
                 ", idle=" + idle +
                 ", user=" + user +
                 ", system=" + system +
-                ", str=" + str +
+                ", str='" + str + '\'' +
                 ", boo=" + boo +
+                ", time=" + time +
                 '}';
     }
 }

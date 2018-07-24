@@ -40,7 +40,7 @@ public class InfluxDBConfiguration {
     @Bean
     @ConditionalOnMissingBean(InfluxDBConnectionFactory.class)
     public InfluxDBConnectionFactory connectionFactory(
-            @Autowired final InfluxDBProperties properties,
+            InfluxDBProperties properties,
             @Autowired(required = false) Interceptor requestInfo) {
         return new InfluxDBConnectionFactory(properties, requestInfo);
     }

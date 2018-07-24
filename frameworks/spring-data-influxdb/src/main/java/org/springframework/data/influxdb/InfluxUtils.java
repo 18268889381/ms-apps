@@ -1,6 +1,7 @@
 package org.springframework.data.influxdb;
 
 import java.lang.reflect.*;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
@@ -34,6 +35,16 @@ public class InfluxUtils {
     }
 
     /**
+     * 是否为静态或者final字段
+     *
+     * @param field 字段
+     * @return 返回判断的值
+     */
+    public static boolean isStaticOrFinal(Field field) {
+        return field == null || isStaticOrFinal(field.getModifiers());
+    }
+
+    /**
      * 获取某个字段
      *
      * @param type  类型
@@ -41,12 +52,13 @@ public class InfluxUtils {
      * @return 返回获取的字段对象
      */
     public static Field getField(Class<?> type, String field) {
-        if (isNonNull(type, field) && !field.isEmpty()) {
+        if (isNonNull(type, field)
+                && !field.isEmpty()
+                && type != Object.class) {
             try {
-                return type.getField(field);
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            }
+                return type.getDeclaredField(field);
+            } catch (NoSuchFieldException e) {/* ignore */}
+            return getField(type.getSuperclass(), field);
         }
         return null;
     }
@@ -152,6 +164,45 @@ public class InfluxUtils {
             }
         }
         return defaultValue;
+    }
+
+    /**
+     * 获取基本的字段和值对象
+     *
+     * @param o 对象
+     * @return 返回字段集合对应的值
+     */
+    public static Map<String, Object> getFieldValues(Object o) {
+        if (o == null || o.getClass() == Object.class) {
+            return new LinkedHashMap<>(0);
+        }
+        Class<?> type = o.getClass();
+        Map<String, Field> fieldMap = getFieldMap(type, field -> !isStaticOrFinal(field));
+        return getFieldValues(fieldMap, o);
+    }
+
+    /**
+     * 获取基本的字段和值对象
+     *
+     * @param fieldMap 字段集合
+     * @param o        对象
+     * @return 返回字段集合对应的值
+     */
+    public static Map<String, Object> getFieldValues(Map<String, Field> fieldMap, Object o) {
+        if (fieldMap == null || fieldMap.isEmpty()) {
+            return new LinkedHashMap<>(0);
+        }
+        Map<String, Object> values = new LinkedHashMap<>(fieldMap.size());
+        fieldMap.forEach((name, field) -> {
+            Object value = getFieldValue(field, o);
+            if (value != null
+                    && value.getClass() != Object.class
+                    && !(value instanceof java.util.Date)) {
+                value = getFieldValues(value);
+            }
+            values.put(name, value);
+        });
+        return values;
     }
 
     /**

@@ -18,12 +18,21 @@ package org.springframework.data.influxdb;
 import org.influxdb.dto.Pong;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
+import org.springframework.data.influxdb.converter.PointConverterFactory;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public interface InfluxDBOperations {
+
+    /**
+     * 获取Point转换器工厂
+     *
+     * @return PointConverterFactory
+     */
+    PointConverterFactory getConverterFactory();
+
     /**
      * Ensures that the configured database exists.
      */

@@ -1,0 +1,14 @@
+description = "quartz"
+
+dependencies {
+
+
+    def d = (all);
+
+//    compile(d.sbsJdbc)
+    compile(d.sbsWeb);
+    compile(d.sbsWebsocket);
+
+
+}
+

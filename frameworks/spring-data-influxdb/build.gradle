@@ -1,7 +1,7 @@
+description = "influxdb的demo"
 
 group = "com.github.miwurster"
 version = "1.8-SNAPSHOT"
-description = "influxdb的demo"
 
 
 dependencies {
@@ -12,6 +12,7 @@ dependencies {
     compile(d.sbsWeb);
 
     compile("org.influxdb:influxdb-java:2.11");
+    compile 'commons-io:commons-io:2.6'
 
 }
 

@@ -1,0 +1,44 @@
+description = "quartz"
+
+dependencies {
+
+
+    def d = (all);
+
+    testCompile(d.sbsTest)
+
+    compile(d.mysqlConnector)
+
+    compile(d.commonsLang3);
+
+    compile(d.javaxServletApi);
+    compile(d.javaxMailApi);
+
+    compile(d.sbsCache)
+
+    compile(d.sbsAop);
+    compile(d.sbsWeb);
+    compile(d.sbsWebsocket);
+    compile(d.sbsFreemarker);
+    compile(d.sbsConfigurationProcessor)
+
+    compile(d.sbsMail)
+    compile(d.sbsLog4j2)
+
+    compile(d.sbsJpa);
+    compile(d.sbsMongodb);
+    compile(d.sbsRedis);
+
+    compile(d.sbsActuator);
+
+    compile(d.mybatisSbs);
+
+    compile(d.poi)
+    compile(d.caffeine)
+
+    compile(d.jacksonDataformatYaml)
+
+    compile 'com.zaxxer:HikariCP:3.2.0'
+
+}
+

@@ -1,0 +1,13 @@
+spring:
+  influxdb:
+    url: http://192.168.100.200:8086
+    username: admin
+    password: hsrg8888
+    database: test_db
+    retention-policy: autogen
+    connect-timeout: 5
+    read-timeout: 3
+    write-timeout: 5
+    gzip: true
+
+#debug: true

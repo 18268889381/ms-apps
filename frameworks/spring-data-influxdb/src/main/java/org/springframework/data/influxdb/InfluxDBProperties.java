@@ -16,41 +16,65 @@
 package org.springframework.data.influxdb;
 
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotEmpty;
+//import javax.validation.constraints.NotEmpty;
 
 @Validated
 @ConfigurationProperties("spring.influxdb")
 public class InfluxDBProperties {
+    /**
+     * InfluxDB连接路径
+     */
     @NotEmpty
     private String url;
-
+    /**
+     * 用户名
+     */
     @NotEmpty
     private String username;
-
+    /**
+     * 密码
+     */
     private String password;
-
+    /**
+     * 数据库
+     */
     @NotEmpty
     private String database;
-
+    /**
+     * 存储策略
+     */
     @NotEmpty
     private String retentionPolicy;
-
+    /**
+     * 连接超时时间
+     */
     private int connectTimeout = 10;
-
+    /**
+     * 读取超时时间
+     */
     private int readTimeout = 30;
-
+    /**
+     * 写入超时时间
+     */
     private int writeTimeout = 10;
-
+    /**
+     * gzip压缩
+     */
     private boolean gzip = false;
+    /**
+     * 时间戳的字段名
+     */
+    private String timeFieldName = "time";
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(final String url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 
@@ -58,7 +82,7 @@ public class InfluxDBProperties {
         return username;
     }
 
-    public void setUsername(final String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -66,7 +90,7 @@ public class InfluxDBProperties {
         return password;
     }
 
-    public void setPassword(final String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -74,7 +98,7 @@ public class InfluxDBProperties {
         return database;
     }
 
-    public void setDatabase(final String database) {
+    public void setDatabase(String database) {
         this.database = database;
     }
 
@@ -82,16 +106,8 @@ public class InfluxDBProperties {
         return retentionPolicy;
     }
 
-    public void setRetentionPolicy(final String retentionPolicy) {
+    public void setRetentionPolicy(String retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
-    }
-
-    public int getWriteTimeout() {
-        return writeTimeout;
-    }
-
-    public void setWriteTimeout(int writeTimeout) {
-        this.writeTimeout = writeTimeout;
     }
 
     public int getConnectTimeout() {
@@ -110,12 +126,28 @@ public class InfluxDBProperties {
         this.readTimeout = readTimeout;
     }
 
+    public int getWriteTimeout() {
+        return writeTimeout;
+    }
+
+    public void setWriteTimeout(int writeTimeout) {
+        this.writeTimeout = writeTimeout;
+    }
+
     public boolean isGzip() {
         return gzip;
     }
 
     public void setGzip(boolean gzip) {
         this.gzip = gzip;
+    }
+
+    public String getTimeFieldName() {
+        return timeFieldName;
+    }
+
+    public void setTimeFieldName(String timeFieldName) {
+        this.timeFieldName = timeFieldName;
     }
 
     @Override
@@ -130,6 +162,9 @@ public class InfluxDBProperties {
                 ", readTimeout=" + readTimeout +
                 ", writeTimeout=" + writeTimeout +
                 ", gzip=" + gzip +
+                ", timeFieldName=" + timeFieldName +
                 '}';
     }
+
+
 }
