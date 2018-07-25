@@ -1,13 +1,13 @@
 spring:
   influxdb:
-    url: http://192.168.100.200:8086
+    url: http://127.0.0.1:8086
     username: admin
-    password: hsrg8888
-    database: test_db
+    password: 123456
+    database: test_influxdb
     retention-policy: autogen
-    connect-timeout: 5
-    read-timeout: 3
-    write-timeout: 5
+    connect-timeout: 15
+    read-timeout: 10
+    write-timeout: 10
     gzip: true
 
 #debug: true

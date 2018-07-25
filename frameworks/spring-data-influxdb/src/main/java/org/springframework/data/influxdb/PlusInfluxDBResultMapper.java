@@ -99,17 +99,13 @@ public class PlusInfluxDBResultMapper {
         throwExceptionIfResultWithError(queryResult);
         cacheMeasurementClass(clazz);
 
-        List<T> result = new LinkedList<T>();
+        List<T> result = new LinkedList<>();
 
         queryResult.getResults().stream()
                 .filter(internalResult -> Objects.nonNull(internalResult) && Objects.nonNull(internalResult.getSeries()))
-                .forEach(internalResult -> {
-                    internalResult.getSeries().stream()
-                            .filter(series -> series.getName().equals(measurementName))
-                            .forEachOrdered(series -> {
-                                parseSeriesAs(series, clazz, result);
-                            });
-                });
+                .forEach(internalResult -> internalResult.getSeries().stream()
+                        .filter(series -> series.getName().equals(measurementName))
+                        .forEachOrdered(series -> parseSeriesAs(series, clazz, result)));
 
         return result;
     }

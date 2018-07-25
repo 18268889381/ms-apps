@@ -1,6 +1,10 @@
 package org.springframework.data.influxdb;
 
+import java.lang.ref.SoftReference;
 import java.lang.reflect.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,9 +13,49 @@ import java.util.function.Predicate;
 /**
  * 工具类
  */
-public class InfluxUtils {
+public final class InfluxUtils {
 
     private InfluxUtils() {
+    }
+
+//    public static String policy(){
+//        // RETENTION POLICY
+//        // RetentionPolicy
+//        // CREATE DATABASE 'test_database' WITH DURATION 3d REPLICATION 3 SHARDDURATION 30m NAME "liquid"
+//    }
+
+    public static final String UTC = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+    private static final ThreadLocal<SoftReference<SimpleDateFormat>> SDF_CACHE = new ThreadLocal<>();
+
+    /**
+     * 解析UTC格式的时间
+     *
+     * @param utcTime UTC时间字符串
+     * @return 返回解析后的Date
+     */
+    public static Date parseUTC(String utcTime) {
+        SimpleDateFormat utcSdf = null;
+        SoftReference<SimpleDateFormat> reference = SDF_CACHE.get();
+        if (reference != null) {
+            utcSdf = reference.get();
+            if (utcSdf == null) {
+                utcSdf = new SimpleDateFormat(UTC);
+                reference = null;
+            }
+        }
+
+        if (reference == null) {
+            utcSdf = (utcSdf != null ? utcSdf : new SimpleDateFormat(UTC));
+            reference = new SoftReference<>(utcSdf);
+        }
+        SDF_CACHE.set(reference);
+
+        try {
+            return utcSdf.parse(utcTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

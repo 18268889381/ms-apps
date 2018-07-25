@@ -97,8 +97,10 @@ public class DefaultPointConverter<T> implements PointConverter<T> {
                         columnMap.put(field.getName(), field);
                     }
 
-                    if (timeField == null
-                            && field.isAnnotationPresent(InfluxTimestamp.class)) {
+                    if (field.isAnnotationPresent(InfluxTimestamp.class)) {
+                        if (timeField != null) {
+                            throw new IllegalStateException("不支持多个时间戳!");
+                        }
                         timeField = field;
                     }
                 });
