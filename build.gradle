@@ -5,7 +5,6 @@ buildscript {
     }
 
     repositories {
-//        maven { url "http://192.168.100.197:9000/repository/hsrgproxy//" }
         mavenCentral()
         jcenter()
     }
@@ -48,7 +47,6 @@ allprojects {
 //    }
 
     repositories {
-//        maven { url "http://192.168.100.197:9000/repository/hsrgproxy//" }
         mavenCentral()
         jcenter()
     }
