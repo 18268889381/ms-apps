@@ -13,23 +13,24 @@ import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@ServerEndpoint("/my-websocket")
+@ServerEndpoint("/web-socket-endpoint")
 @Component
-public class MyWebSocket {
-    private static final Logger logger = LoggerFactory.getLogger(MyWebSocket.class);
+public class WebSocket {
+    private static final Logger logger = LoggerFactory.getLogger(WebSocket.class);
 
-    private static final AtomicInteger onlineCount = new AtomicInteger(0);
-    private static final CopyOnWriteArraySet<MyWebSocket> webSocketSet = new CopyOnWriteArraySet<>();
+    private static final AtomicInteger ONLINE_COUNT = new AtomicInteger(0);
+    private static final CopyOnWriteArraySet<WebSocket> WEB_SOCKET_SET = new CopyOnWriteArraySet<>();
 
-    private Session session;
+    private Session currentSession;
 
     @OnOpen
     public void onOpen(Session session) throws IOException {
-        this.session = session;
-        webSocketSet.add(this);
+        this.currentSession = session;
+        WEB_SOCKET_SET.add(this);
         incrementOnlineCount();
-        for (MyWebSocket item : webSocketSet) {
-            if (!item.equals(this)) { //send to others only.
+        for (WebSocket item : WEB_SOCKET_SET) {
+            if (!item.equals(this)) {
+                //send to others only.
                 item.sendMessage("someone just joined in.");
             }
         }
@@ -38,9 +39,9 @@ public class MyWebSocket {
 
     @OnClose
     public void onClose() throws IOException {
-        webSocketSet.remove(this);
+        WEB_SOCKET_SET.remove(this);
         decOnlineCount();
-        for (MyWebSocket item : webSocketSet) {
+        for (WebSocket item : WEB_SOCKET_SET) {
             item.sendMessage("someone just closed a connection.");
         }
         logger.info("one connection closed...current online count: {}", getOnlineCount());
@@ -50,25 +51,25 @@ public class MyWebSocket {
     public void onMessage(String message, Session session) throws IOException {
         logger.info("message received: {}", message);
         // broadcast received message
-        for (MyWebSocket item : webSocketSet) {
-            item.sendMessage(message);
+        for (WebSocket socket : WEB_SOCKET_SET) {
+            socket.sendMessage(message);
         }
     }
 
     public void sendMessage(String message) throws IOException {
-        this.session.getBasicRemote().sendText(message);
+        this.currentSession.getBasicRemote().sendText(message);
     }
 
     public static synchronized int getOnlineCount() {
-        return onlineCount.get();
+        return ONLINE_COUNT.get();
     }
 
     public static synchronized int incrementOnlineCount() {
-        return onlineCount.incrementAndGet();
+        return ONLINE_COUNT.incrementAndGet();
     }
 
     public static synchronized int decOnlineCount() {
-        return onlineCount.decrementAndGet();
+        return ONLINE_COUNT.decrementAndGet();
     }
 
 }
