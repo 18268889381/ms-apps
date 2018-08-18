@@ -2,42 +2,46 @@ package org.springframework.data.influxdb.wrapper;
 
 import org.influxdb.dto.QueryResult;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * QueryResult的数据
- *
- * @author DINGXIUAN
  */
-public class QueryResultWrapper {
+public class QueryResultWrapper<T> {
 
     private QueryResult result;
     private List<QueryResult.Result> results;
-    private List<SeriesWrapper> seriesWrappers;
+    private List<SeriesWrapper<T>> seriesWrappers;
 
     protected QueryResultWrapper() {
         // ~
     }
 
     public QueryResultWrapper(QueryResult result) {
-        this.wrapper(result);
+        this(result, null);
     }
 
-    public void wrapper(QueryResult result) {
-        if (result == null) {
-            throw new NullPointerException("result is null.");
-        }
-        this.result = result;
-        this.results = result.getResults();
+    public QueryResultWrapper(QueryResult result, final Class<T> type) {
+        this.wrapper(result, type);
+    }
 
-        int size = results != null ? results.size() : 1;
-        this.seriesWrappers = new ArrayList<>(size);
-
-        if (results != null) {
-            results.forEach(r -> r.getSeries().forEach(
-                    series -> seriesWrappers.add(new SeriesWrapper(series))));
+    public void wrapper(QueryResult results, final Class<T> type) {
+        if (results == null) {
+            throw new NullPointerException("results is null.");
         }
+
+        this.result = results;
+        this.results = results.getResults();
+
+        this.seriesWrappers = new LinkedList<>();
+        if (this.results != null) {
+            this.results.stream()
+                    .filter(r -> r != null && r.getSeries() != null)
+                    .forEach(r -> r.getSeries().forEach(
+                            series -> seriesWrappers.add(new SeriesWrapper<>(series, type))));
+        }
+
     }
 
     public void setResult(QueryResult result) {
@@ -52,7 +56,7 @@ public class QueryResultWrapper {
         return results;
     }
 
-    public List<SeriesWrapper> getSeriesWrappers() {
+    public List<SeriesWrapper<T>> getSeriesWrappers() {
         return seriesWrappers;
     }
 }

@@ -5,18 +5,23 @@ dependencies {
 
     def d = (all);
 
-    compile(d.mysqlConnector)
+//    testCompile(d.mybatisSbsTest)
 
+    compile(d.mysqlConnector)
     compile(d.druid)
 
-    compile(d.sbsJdbc)
-//    compile(d.sbsWeb);
+    compile "com.mchange:c3p0:0.9.5.2"
 
-    compile(d.quartz);
-    compile(d.quartzJobs);
+//    compile(d.sbsJdbc)
+    compile(d.sbsWeb)
 
+//    compile(d.quartz);
+//    compile(d.quartzJobs);
     compile(d.sbsQuartz)
 
+    compile(d.mybatisSbsAutoconfigure)
+    compile(d.mybatisSbs)
+    compile(d.pagehelperSbs)
 
 }
 

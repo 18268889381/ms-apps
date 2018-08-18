@@ -1,0 +1,16 @@
+
+apply plugin: 'java'
+
+description = "websocket"
+
+apply from: "${getRootDir()}/buildSystem/springcloud.gradle"
+
+dependencies {
+
+    compile 'org.springframework.boot:spring-boot-starter-web:2.0.4.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-websocket:2.0.4.RELEASE'
+
+    compile(springClouds.scsEurekaServer)
+
+}
+

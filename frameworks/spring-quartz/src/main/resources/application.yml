@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/quartz_store?useUnicode=true
+    username: root
+    password: hsrg8888
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    
+mybatis: 
+  type-aliases-package: com.example.demo.entity
+  mapper-locations: classpath:com/example/demo/mapper/*.xml
+#  type-handlers-package:
+
+# Mapper configuration
+mapper:
+  mappers: com.framework.mybatis.mapper.SuperMapper,org.apache.ibatis.annotations.Mapper
+  not-empty: false
+  identity: MYSQL
+
+# PageHelper configuration
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params=count: countSql

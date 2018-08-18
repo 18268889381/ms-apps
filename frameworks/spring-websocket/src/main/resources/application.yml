@@ -1,0 +1,15 @@
+server:
+#  port: ${PORT:${SERVER_PORT:0}} # 随机指定个没使用的端口
+  port: 8090
+
+spring:
+  application:
+    name: ms-service-websocket
+
+eureka:
+#  instance:
+#      hostname: ms-service-eureka-client
+  client:
+    service-url:
+      defaultZone: http://localhost:80/eureka/
+

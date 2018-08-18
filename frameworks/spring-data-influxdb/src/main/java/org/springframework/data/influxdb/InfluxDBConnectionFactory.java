@@ -73,9 +73,14 @@ public class InfluxDBConnectionFactory implements InitializingBean {
                 client.addNetworkInterceptor(networkInterceptor);
             }
 
-            connection = InfluxDBFactory
-                    .connect(properties.getUrl(), properties.getUsername(), properties.getPassword(), client);
-            logger.debug("Using InfluxDB '{}' on '{}'", properties.getDatabase(), properties.getUrl());
+            String url = properties.getUrl();
+            String username = properties.getUsername();
+            String password = properties.getPassword();
+
+            connection = InfluxDBFactory.connect(url, username, password, client);
+
+            logger.debug("Using InfluxDB '{}' on '{}'", properties.getDatabase(), url);
+
             if (properties.isGzip()) {
                 logger.debug("Enabled gzip compression for HTTP requests");
                 connection.enableGzip();

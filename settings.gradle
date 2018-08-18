@@ -2,3 +2,15 @@ rootProject.name = 'ms-apps'
 
 include ":frameworks:spring-data-influxdb"
 include ":frameworks:spring-quartz"
+include ":frameworks:spring-websocket"
+include ":frameworks:spring-aop-log"
+
+//include ":samples:spring-boot-websocket-chat-demo"
+
+include ":samples:websocket-server"
+include ":samples:websocket-client"
+
+include ":services:eureka-server"
+include ":services:eureka-client"
+
+

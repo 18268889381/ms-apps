@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8"/>
+<head>
+    <title>Home</title>
+    <script th:src="@{sockjs.min.js}"></script>
+    <script th:src="@{stomp.min.js}"></script>
+    <script th:src="@{jquery.js}"></script>
+</head>
+<body>
+<p>
+    聊天室
+</p>
+
+<div>
+    <form id="wiselyForm">
+        <textarea rows="4" cols="60" name="text"></textarea>
+        <input type="submit" value="发送"/>
+    </form>
+</div>
+
+<script th:inline="javascript">
+    //    $('#wiselyForm').submit(function (e) {
+    //        e.preventDefault();
+    //        var text = $('#wiselyForm').find('textarea[name="text"]').val();
+    //        sendSpittle(text);
+    //    });
+    //    //链接endpoint名称为 "/endpointChat" 的endpoint。
+    //    var sock = new SockJS("/endpointChat");
+    //    var stomp = Stomp.over(sock);
+    //    stomp.connect('guest', 'guest', function (frame) {
+    //
+    //        /**  订阅了/user/queue/notifications 发送的消息,这里雨在控制器的 convertAndSendToUser 定义的地址保持一致, 
+    //         *  这里多用了一个/user,并且这个user 是必须的,使用user 才会发送消息到指定的用户。 
+    //         *  */
+    //        stomp.subscribe("/user/queue/notifications", handleNotification);
+    //    });
+    //
+    //
+    //    function handleNotification(message) {
+    //        $('#output').append("<b>Received: " + message.body + "</b><br/>")
+    //    }
+    //
+    //    function sendSpittle(text) {
+    //        stomp.send("/chat", {}, JSON.stringify({'name': text}));//3
+    //    }
+    //
+    //    $('#stop').click(function () {
+    //        sock.close()
+    //    });
+
+    var websocket = null;
+    var username = localStorage.getItem("name");
+
+    username = username ? username : "lilei";
+
+    // 判断当前浏览器是否支持WebSocket
+    if ('WebSocket' in window) {
+        websocket = new WebSocket("ws://" + document.location.host + "/web-socket-endpoint" + username);
+    } else {
+        alert('当前浏览器 Not support websocket')
+    }
+
+    // 连接发生错误的回调方法
+    websocket.onerror = function () {
+        setMessageInnerHTML("WebSocket连接发生错误");
+    };
+
+    // 连接成功建立的回调方法
+    websocket.onopen = function () {
+        setMessageInnerHTML("WebSocket连接成功");
+    };
+
+    // 接收到消息的回调方法
+    websocket.onmessage = function (event) {
+        setMessageInnerHTML(event.data);
+    };
+
+    // 连接关闭的回调方法
+    websocket.onclose = function () {
+        setMessageInnerHTML("WebSocket连接关闭");
+    };
+
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    window.onbeforeunload = function () {
+        closeWebSocket();
+    };
+
+    //关闭WebSocket连接
+    function closeWebSocket() {
+        websocket.close();
+    }
+
+</script>
+
+<div id="output"></div>
+</body>
+</html>

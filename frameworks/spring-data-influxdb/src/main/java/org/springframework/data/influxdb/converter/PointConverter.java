@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Bean转换器
+ * Point转换器
  *
  * @param <T>
  */
@@ -15,36 +15,36 @@ public interface PointConverter<T> {
     /**
      * 将bean对象转换成Point
      *
-     * @param bean 需要转换的bean
+     * @param item 需要转换的bean
      * @return 返回转换的Point
      */
-    Point convert(final T bean);
+    Point convert(final T item);
 
     /**
      * 将bean对象转换成Point
      *
-     * @param bean 需要转换的bean
+     * @param item 需要转换的bean
      * @param time 时间戳
      * @return 返回转换的Point
      */
-    Point convert(final T bean, long time);
+    Point convert(final T item, long time);
 
     /**
      * 将bean对象转换成Point
      *
-     * @param bean     需要转换的bean
+     * @param item     需要转换的bean
      * @param time     时间戳
      * @param timeUnit TimeUnit
      * @return 返回转换的Point
      */
-    Point convert(final T bean, long time, TimeUnit timeUnit);
+    Point convert(final T item, long time, TimeUnit timeUnit);
 
     /**
      * 将bean对象转换成Point
      *
-     * @param beans 需要转换的bean集合
+     * @param items 需要转换的bean集合
      * @return 返回转换的Point集合
      */
-    List<Point> convert(final List<T> beans);
+    List<Point> convert(final List<T> items);
 
 }

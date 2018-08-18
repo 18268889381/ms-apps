@@ -1,0 +1,64 @@
+description = "spring aop 日志"
+
+def nexusGroupId = "com.frameworks.aop"
+def nexusArtifactId = "log"
+def nexusVersion = "1.0.0-SNAPSHOT"
+
+task sourceJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+////参见Part 2， 为项目生成**.jar/**-javadoc.jar/**-sources.jar
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from 'build/docs/javadoc'
+//}
+
+//打包源代码
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives jar
+//    archives javadocJar
+    archives sourcesJar
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.version = "$nexusVersion"
+        pom.groupId = "$nexusGroupId"
+        pom.artifactId = "$nexusArtifactId"
+    }
+}
+
+//上传到nexus
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            repository(url: "http://192.168.100.197:9000/repository/hsrg/") {
+//                authentication(userName: "admin", password: "admin123")
+//            }
+//            pom.version = "$nexusVersion"
+//            pom.groupId = "$nexusGroupId"
+//            pom.artifactId = "$nexusArtifactId"
+//        }
+//    }
+//}
+
+
+dependencies {
+
+
+    def d = (all);
+//    compileOnly(d.sbsWeb);
+//    compileOnly("javax.servlet:javax.servlet-api:4.0.1")
+//    compileOnly("org.aspectj:aspectjweaver:1.9.1")
+
+    compile(d.sbsWeb);
+    compile("org.aspectj:aspectjweaver:1.9.1")
+}
+

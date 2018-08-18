@@ -1,0 +1,17 @@
+
+apply plugin: 'java'
+
+//apply from: "${getRootDir()}/buildSystem/springcloud.gradle"
+
+description = "Eureka客户端"
+
+dependencies {
+
+//    compile(springClouds.scsEurekaClient)
+
+    def d = (all);
+    compile(d.sbsActuator)
+
+    compile 'com.google.guava:guava:25.1-jre'
+
+}

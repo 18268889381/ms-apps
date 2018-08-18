@@ -16,21 +16,17 @@
 package org.springframework.data.influxdb.enable;
 
 import okhttp3.Interceptor;
-import okhttp3.Request;
-import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.influxdb.InfluxDBConnectionFactory;
 import org.springframework.data.influxdb.InfluxDBProperties;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.data.influxdb.converter.PointConverterFactory;
-import org.springframework.data.influxdb.converter.PointConverterFactoryImpl;
-import org.springframework.data.influxdb.network.NetworkInterceptor;
+import org.springframework.data.influxdb.converter.DefaultPointConverterFactory;
 
 @Configuration
 public class InfluxDBConfiguration {
@@ -39,44 +35,31 @@ public class InfluxDBConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(InfluxDBConnectionFactory.class)
-    public InfluxDBConnectionFactory connectionFactory(
-            @Autowired final InfluxDBProperties properties,
-            @Autowired(required = false) Interceptor requestInfo) {
+    public InfluxDBConnectionFactory connectionFactory(InfluxDBProperties properties,
+                                                       @Autowired(required = false) Interceptor requestInfo) {
         return new InfluxDBConnectionFactory(properties, requestInfo);
     }
 
     @Bean
     @ConditionalOnMissingBean(InfluxDBTemplate.class)
-    public InfluxDBTemplate influxDBTemplate(
-            final InfluxDBConnectionFactory connectionFactory,
-            final PointConverterFactory converterFactory) {
+    public InfluxDBTemplate influxDBTemplate(InfluxDBConnectionFactory connectionFactory,
+                                             PointConverterFactory converterFactory) {
         return new InfluxDBTemplate(connectionFactory, converterFactory);
     }
 
     @Bean
     @ConditionalOnMissingBean(PointConverterFactory.class)
     public PointConverterFactory converterFactory() {
-        return new PointConverterFactoryImpl();
+        return new DefaultPointConverterFactory();
     }
 
-    /**
-     * OkHttp的拦截器，主要用于打印日志
-     */
-    @Bean("requestInfo")
-    @ConditionalOnMissingBean(Interceptor.class)
-    public Interceptor requestInfo() {
-        return new NetworkInterceptor(new NetworkInterceptor.Callback() {
-            @Override
-            public void onRequest(Request request, NetworkInterceptor.RequestInfo info) {
-                if (logger.isDebugEnabled()) {
-                    logger.info("\n{}\n", info.toString());
-                }
-            }
+//    /**
+//     * OkHttp的拦截器，主要用于打印日志
+//     */
+//    @Bean("requestInfo")
+//    @ConditionalOnMissingBean(Interceptor.class)
+//    public Interceptor requestInfo() {
+//        return new NetworkInterceptor();
+//    }
 
-            @Override
-            public void onResponse(Response response) {
-
-            }
-        });
-    }
 }

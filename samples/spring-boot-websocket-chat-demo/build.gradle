@@ -1,0 +1,19 @@
+description = "spring-boot-websocket-chat-demo"
+
+dependencies {
+
+    def d = (all);
+
+    testCompile(d.sbsTest)
+
+    runtime(d.sbsDevtools);
+
+    compile(d.sbsWeb);
+    compile(d.sbsWebsocket);
+    compile(d.sbsConfigurationProcessor)
+
+    compile(d.sbsReactorNetty);
+    compile(d.sbsAmqp);
+
+
+}

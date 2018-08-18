@@ -30,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class InfluxDBTemplate extends InfluxDBAccessor implements InfluxDBOperations {
+
     private PointConverterFactory converterFactory;
 
     public InfluxDBTemplate() {
@@ -51,6 +52,16 @@ public class InfluxDBTemplate extends InfluxDBAccessor implements InfluxDBOperat
     public void afterPropertiesSet() {
         super.afterPropertiesSet();
         Assert.notNull(converterFactory, "PointConverterFactory is required");
+    }
+
+    /**
+     * 获取Point转换器工厂
+     *
+     * @return PointConverterFactory
+     */
+    @Override
+    public PointConverterFactory getConverterFactory() {
+        return converterFactory;
     }
 
     @Override
@@ -81,8 +92,11 @@ public class InfluxDBTemplate extends InfluxDBAccessor implements InfluxDBOperat
         }
 
         // 检查是否存在类型不一致的对象
-        Class<?> standard = payload.get(0).getClass();
+        final Class<?> standard = payload.get(0).getClass();
         payload.forEach(t -> {
+            if (t == null) {
+                throw new NullPointerException("无法插入Null值");
+            }
             if (t.getClass() != standard) {
                 throw new IllegalArgumentException("插入的数据中存在多种类型的对象!");
             }

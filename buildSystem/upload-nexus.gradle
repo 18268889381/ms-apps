@@ -1,0 +1,56 @@
+
+group 'cn.zytx'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    compile 'com.jfinal:jfinal:2.2'
+    compile 'ch.qos.logback:logback-core:1.2.3'
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+}
+
+//Maven仓库的URL
+//注意需要在防火墙的高级规则中添加允许入站规则http://bbs.csdn.net/topics/390728329
+def MAVEN_REPO_RELEASE_URL= 'http://192.168.2.189:8081/nexus/content/repositories/releases/'
+def MAVEN_REPO_SNAPSHOT_URL= 'http://192.168.2.189:8081/nexus/content/repositories/snapshots/'
+//登录nexus ossde的用户名
+def NEXUS_USERNAME='admin'
+//登录nexus oss的密码
+def NEXUS_PASSWORD='admin123'
+def ARTIFACT_ID = 'server-common'
+// type
+def TYPE = 'jar'
+//description
+def DESCRIPTION = 'This is Token service included add,edit,delete,query'
+
+uploadArchives {
+    configuration = configurations.archives
+    repositories {
+        mavenDeployer {
+            snapshotRepository(url: MAVEN_REPO_SNAPSHOT_URL) {
+                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
+            }
+            repository(url: MAVEN_REPO_RELEASE_URL) {
+                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
+            }
+
+//            repository(url: uri('C:\\Users\\xiongshiyan\\.m2\\repository')) //定义本地maven仓库的地址
+//            repository(url: uri('C:\\Users\\xiongshiyan\\.gradle\\caches\\modules-2\\files-2.1')) //定义本地Gradle仓库的地址
+
+            pom.project {
+                version version
+                artifactId ARTIFACT_ID
+                groupId group
+                packaging TYPE
+                description DESCRIPTION
+            }
+        }
+    }
+}

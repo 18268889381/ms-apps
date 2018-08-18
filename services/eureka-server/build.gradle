@@ -1,0 +1,14 @@
+apply plugin: 'java'
+
+apply from: "${getRootDir()}/buildSystem/springcloud.gradle"
+
+description = "Eureka服务端"
+
+dependencies {
+
+    def d = (all);
+    compile(d.sbsActuator)
+
+    compile(springClouds.scsEurekaServer)
+
+}
